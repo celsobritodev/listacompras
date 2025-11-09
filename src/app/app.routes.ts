@@ -5,5 +5,5 @@ import { Detalhelista } from './componentes/detalhelista/detalhelista';
 
 export const routes: Routes = [
   { path: '', component: Listas },
-  { path: 'detalhe', component: Detalhelista}
+  { path: 'detalhe/:id', component: Detalhelista}
 ];

@@ -10,7 +10,9 @@
   @for (item of listas; track item.id) {
   <div class="row lista">
     <div class="col-4">{{item.data}}</div>
-    <div class="col-8">{{item.nomeMercado}} R$ {{item.valorTotal}}</div>
+    <div class="col-8">
+       <a [routerLink]="['/detalhe',item.id]"> {{item.nomeMercado}} R$ {{item.valorTotal}}</a>
+     </div>
   </div>
   } @empty {
   <div class="row">

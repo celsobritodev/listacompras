@@ -1,1 +1,67 @@
-<p>detalhelista works!</p>
+<div class="containter">
+  <div class="row">
+    <div class="col-12">
+      <h3 class="text-center">Detalhe da Lista de Compras</h3>
+    </div>
+  </div>
+  <div class="row titulo">
+    <div class="col-12">
+      Data da Compra: Valor Total R$
+    </div>
+  </div>
+  <div class="row mt-2">
+    <div class="col-12">
+      <button type="button" class="btn btn-primary" (click)="exibirModal()">Adicionar Item</button>
+    </div>
+  </div>
+  <!-- repeticao dos itens da lista-->
+
+</div>
+
+
+
+<!-- modal para novo item da lista e novo produto-->
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" id="btnModal" style="visibility: hidden" data-bs-toggle="modal"
+  data-bs-target="#exampleModal">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Adcionar Item da lista</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- formulario para o produto e item/quantidade opcionais -->
+        <label for="selectProduto">Selecione o Produto</label>
+        <select class="form-select" [(ngModel)]="novoItem.produto" id="selectProduto">
+          @for (prod of listaProdutos; track prod.id) {
+          <option [value]="prod.id">{{ prod.nome }}
+          </option>
+          }
+        </select>
+
+        <p>*Não encontrou? <button class="btn btn-primary" (click)="habilitarNovoProduto()">Criar</button></p>
+        <div *ngIf="formNovoProduto">
+          <label for="txtNovoProduto">Nome</label>
+          <input type="text" class="form-control" [(ngModel)]="novoProduto.nome"> <button class="btn btn-primary" (click)="cadastrarNovoProduto()">Ok</button>
+
+        </div>
+
+        <label for="txtQuantidade">Quantidade (opcional)</label>
+        <input type="number" class="form-control" [(ngModel)]="novoItem.quantidade" >
+        <label for="txtPreo">Preço a ser pago (opcional)</label>
+        <input type="number" class="form-control" [(ngModel)]="novoItem.precoTotal" >
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="adicionarItemLista()">Adicionar</button>
+      </div>
+    </div>
+  </div>
+</div>

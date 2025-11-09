@@ -3,11 +3,12 @@ import { ListasService } from '../../servicos/listas-service';
 import { Lista } from '../../model/Lista';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-listas',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule,RouterModule],
   templateUrl: './listas.html',
   styleUrl: './listas.scss',
 })
