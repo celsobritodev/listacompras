@@ -1,0 +1,20 @@
+#botaoNovaLista {
+
+  width: 40px;
+  height: 40px;
+  position: fixed;
+  bottom: 1em; // Distância do fundo
+  right: 1em; // Distância da direita
+  background-color: green;
+  color: white;
+  border-radius: 50%;
+  // Centralização com Flexbox
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.lista{
+  border-bottom: 1px solid gray;
+}
