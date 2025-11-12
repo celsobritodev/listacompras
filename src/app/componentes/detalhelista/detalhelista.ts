@@ -26,6 +26,7 @@ export class Detalhelista implements OnInit {
   public formNovoProduto: boolean = false;
   public idLista: number = 0;
   public listaAtual: Lista = new Lista(); // 👈 NOVA PROPRIEDADE
+  public itensDaLista: ItemLista[] = []; // 👈 **ADICIONE ESTA PROPRIEDADE**
 
   constructor(
     private produtoService: ProdutosService,
@@ -46,9 +47,27 @@ export class Detalhelista implements OnInit {
       console.log("ID da lista recuperado:", this.idLista);
       this.recuperarTodosProdutos();
       this.recuperarDetalhesLista(); // 👈 CHAMA O NOVO MÉTODO
+      this.recuperarItensDaLista(); // 👈 **CHAME ESTE NOVO MÉTODO**
     });
 
   }
+
+// 👈 **ADICIONE ESTE NOVO MÉTODO**
+  public recuperarItensDaLista() {
+    this.itemListaService.recuperarItensPorLista(this.idLista).subscribe({
+      next: (res: ItemLista[]) => {
+        this.itensDaLista = res;
+        console.log('Itens da lista carregados:', this.itensDaLista);
+      },
+      error: (err) => {
+        console.error('Erro ao recuperar itens da lista:', err);
+        alert('Erro ao carregar itens da lista.');
+      },
+    });
+  }
+
+
+
 
    // 👈 NOVO MÉTODO PARA RECUPERAR DETALHES DA LISTA
   public recuperarDetalhesLista() {
@@ -120,10 +139,6 @@ export class Detalhelista implements OnInit {
     const itemParaEnviar = this.removerNumSeq(this.novoItem);
     // Atribui o ID da lista
     itemParaEnviar.lista = { id: this.idLista } as any;
-
-
-    // Lógica para adicionar o novo item à lista com o ID da lista atual
-
     console.log('Adicionando item à lista ID:', this.idLista, 'Item:', itemParaEnviar);
 
     // Aqui você pode chamar um serviço para salvar o item na lista específica
@@ -132,6 +147,7 @@ export class Detalhelista implements OnInit {
         alert('Item adicionado à lista com sucesso!');
         // Reseta o formulário do novo item
         this.novoItem = new ItemLista();
+        this.recuperarItensDaLista(); // 👈 **RECARREGA OS ITENS APÓS ADICIONAR**
       },
       error: (err) => {
         alert('Erro ao adicionar item à lista.');
