@@ -7,18 +7,23 @@ import { environment } from '../environments/environment';
 @Injectable({
   providedIn: 'root',
 })
-
 export class ListasService {
-
-  constructor(private http: HttpClient ){}
+  constructor(private http: HttpClient) {}
 
   public recuperarListas(): Observable<Lista[]> {
-    return this.http.get<Lista[]>(environment.urlAPI+"/listas");
-
+    const endPoint: string = environment.urlAPI + '/listas';
+    console.log('EndPoint: ' + endPoint);
+    return this.http.get<Lista[]>(endPoint);
   }
 
-  public cadastrarLista(lista:Lista):Observable<Lista>{
-     return this.http.post<Lista>(environment.urlAPI+"/lista",lista);
+  public cadastrarLista(lista: Lista): Observable<Lista> {
+    return this.http.post<Lista>(environment.urlAPI + '/listas', lista);
   }
 
+  // 👈 **ADICIONE ESTE MÉTODO NOVO**
+  public recuperarListaPorId(id: number): Observable<Lista> {
+    const endPoint: string = `${environment.urlAPI}/listas/${id}`;
+    console.log('EndPoint para detalhes:', endPoint);
+    return this.http.get<Lista>(endPoint);
+  }
 }

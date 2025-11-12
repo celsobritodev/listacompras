@@ -1,10 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Produto } from '../../model/Produto';
 import { ProdutosService } from '../../servicos/produtos-service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ItemLista } from '../../model/item-lista';
 import { ActivatedRoute } from '@angular/router';
+import { ItensListaService } from '../../servicos/itens-lista-service';
+import { ListasService } from '../../servicos/listas-service'; // 👈 Adicione este import
+import { Lista } from '../../model/Lista'; // 👈 Adicione este import
 
 
 
@@ -16,28 +19,49 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './detalhelista.html',
   styleUrl: './detalhelista.scss',
 })
-export class Detalhelista {
+export class Detalhelista implements OnInit {
   public listaProdutos: Produto[] = [];
   public novoProduto: Produto;
   public novoItem: ItemLista;
   public formNovoProduto: boolean = false;
   public idLista: number = 0;
-
+  public listaAtual: Lista = new Lista(); // 👈 NOVA PROPRIEDADE
 
   constructor(
     private produtoService: ProdutosService,
-    private activateRoute: ActivatedRoute
+    private activateRoute: ActivatedRoute,
+    private itemListaService: ItensListaService,
+    private listasService: ListasService // 👈 Adicione no constructor
 
   ) {
     this.novoProduto = new Produto();
     this.novoItem = new ItemLista();
-    // Recupera o ID da lista a partir dos parâmetros da rota
-    this.idLista = this.activateRoute.snapshot.params['id'];
-    console.log("ID da lista:", this.idLista);
+
   }
 
   ngOnInit(): void {
-    this.recuperarTodosProdutos();
+     // CORREÇÃO: Recuperar o ID no ngOnInit usando subscribe
+    this.activateRoute.params.subscribe(params => {
+      this.idLista = +params['id']; // O '+' converte string para número
+      console.log("ID da lista recuperado:", this.idLista);
+      this.recuperarTodosProdutos();
+      this.recuperarDetalhesLista(); // 👈 CHAMA O NOVO MÉTODO
+    });
+
+  }
+
+   // 👈 NOVO MÉTODO PARA RECUPERAR DETALHES DA LISTA
+  public recuperarDetalhesLista() {
+    this.listasService.recuperarListaPorId(this.idLista).subscribe({
+      next: (res: Lista) => {
+        this.listaAtual = res;
+        console.log('Detalhes da lista carregados:', this.listaAtual);
+      },
+      error: (err) => {
+        console.error('Erro ao recuperar detalhes da lista:', err);
+        alert('Erro ao carregar detalhes da lista.');
+      },
+    });
   }
 
   public recuperarTodosProdutos() {
@@ -91,10 +115,35 @@ export class Detalhelista {
   }
 
   public adicionarItemLista() {
+
+    // Cria uma cópia do objeto sem o numSeq
+    const itemParaEnviar = this.removerNumSeq(this.novoItem);
+    // Atribui o ID da lista
+    itemParaEnviar.lista = { id: this.idLista } as any;
+
+
     // Lógica para adicionar o novo item à lista com o ID da lista atual
-    this.novoItem.lista.id = this.idLista;
-    console.log('Adicionando item à lista ID:', this.idLista, 'Item:', this.novoItem);
+
+    console.log('Adicionando item à lista ID:', this.idLista, 'Item:', itemParaEnviar);
+
     // Aqui você pode chamar um serviço para salvar o item na lista específica
+    this.itemListaService.adicionarNovoItem(itemParaEnviar).subscribe({
+      next: (res: ItemLista) => {
+        alert('Item adicionado à lista com sucesso!');
+        // Reseta o formulário do novo item
+        this.novoItem = new ItemLista();
+      },
+      error: (err) => {
+        alert('Erro ao adicionar item à lista.');
+      },
+    });
+  }
+     // NOVO MÉTODO - Remove o numSeq do ItemLista (similar ao removerId do Produto)
+    private removerNumSeq(item: ItemLista): any {
+    const { numSeq, ...itemSemNumSeq } = item;
+    return itemSemNumSeq;
   }
 
-}
+  }
+
+

@@ -1,13 +1,15 @@
 export class Lista {
   public id: number;
-  public data: Date;
+ // public data: Date;
+  public data: String;
   public nomeMercado: string;
   public valorTotal: number;
   public status: number;
 
   constructor(
     id: number = 0,
-    data: Date = new Date(),
+    //data: Date = new Date(),
+    data:string ='',
     nomeMercado: string = '',
     valorTotal: number = 0,
     status: number = 0

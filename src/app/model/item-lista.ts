@@ -3,7 +3,7 @@ import { Produto } from "./Produto";
 
 export class ItemLista {
 
-   public numSeq: number = 0;
+  public numSeq: number = 0;
   public quantidade: number = 0;
   public precoTotal: number = 0;
   public concluido: number = 0;

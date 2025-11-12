@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'app-listas',
   standalone: true,
-  imports: [CommonModule, FormsModule,RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './listas.html',
   styleUrl: './listas.scss',
 })
@@ -28,6 +28,18 @@ export class Listas implements OnInit {
     this.service.recuperarListas().subscribe({
       next: (res: Lista[]) => {
         this.listas = res;
+
+        console.log('Listas carregadas:', this.listas);
+
+        // Debug: verifique os dados
+        this.listas.forEach((item) => {
+          console.log('Item:', {
+            id: item.id,
+            data: item.data,
+            tipoData: typeof item.data,
+            nome: item.nomeMercado,
+          });
+        });
       },
       error: (err) => {
         alert('Erro ao recuperar listas de compras.');
@@ -68,7 +80,6 @@ export class Listas implements OnInit {
       }
     }
   }
-
 
   private removerId(lista: Lista): any {
     const { id, ...listaSemId } = lista;
