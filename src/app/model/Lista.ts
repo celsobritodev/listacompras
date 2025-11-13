@@ -1,6 +1,5 @@
 export class Lista {
   public id: number;
- // public data: Date;
   public data: String;
   public nomeMercado: string;
   public valorTotal: number;
@@ -8,7 +7,6 @@ export class Lista {
 
   constructor(
     id: number = 0,
-    //data: Date = new Date(),
     data:string ='',
     nomeMercado: string = '',
     valorTotal: number = 0,

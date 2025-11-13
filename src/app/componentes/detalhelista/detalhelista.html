@@ -2,15 +2,15 @@
   <div class="row">
     <div class="col-12">
       <!-- 👈 TÍTULO MODIFICADO COM O NOME DA LISTA -->
-      <h5 class="text-center">Lista '{{listaAtual.nomeMercado}}'</h5>
+      <h5 class="text-center">Lista '{{listaCompras.nomeMercado}}'</h5>
     </div>
   </div>
   <div class="row titulo">
     <div class="col-12 small text-muted">
-      Data da Compra: {{listaAtual.data}} | Valor Total: R$ {{listaAtual.valorTotal}}
+      Data da Compra: {{listaCompras.data}} | Valor Total: R$ {{listaCompras.valorTotal}}
     </div>
     <div class="col-12 small text-muted">
-      Local: {{listaAtual.nomeMercado}}
+      Local: {{listaCompras.nomeMercado}}
     </div>
   </div>
   <div class="row mt-2">
@@ -29,23 +29,27 @@
       <div class="card mb-2">
         <div class="card-body py-2">
           <div class="row align-items-center">
-            <div class="col-7">
+            <div class="col-4">
               <strong>{{item.produto.nome}}</strong>
             </div>
             <div class="col-3 text-end">
               <span class="badge bg-secondary">{{item.quantidade || 0}} un</span>
             </div>
-            <div class="col-2 text-end">
-              <span class="text-success">R$ {{item.precoTotal || '0.00'}}</span>
+            <div class="col-4 text-end">
+              <span class="text-success">{{item.precoTotal || '0' | currency:'BRL':'symbol':'1.2-2'}}</span>
+            </div>
+            <div class="col-1">
+             <input type="checkbox" class="form-check">
             </div>
           </div>
-          @if (item.concluido === 1) {
+
+       <!--    @if (item.concluido === 1) {
           <div class="row">
             <div class="col-12">
               <small class="text-muted"><i class="fa-solid fa-check"></i> Concluído</small>
             </div>
           </div>
-          }
+          } -->
         </div>
       </div>
       } @empty {
